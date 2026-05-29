@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Store – SMKS Merdeka Bandung</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Fredoka+One&display=swap" rel="stylesheet">
+
+  <!-- CSS terpisah -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     LANDING PAGE
+     ══════════════════════════════════════ -->
+<div id="page-landing" class="page active">
+  <div class="landing-header">
+    <span class="brand">🏫 School Store</span>
+    <button class="btn-signin" onclick="goto('login')">Sign In</button>
+  </div>
+  <div class="landing-hero">
+    <div class="hero-text">
+      <h1>HI!!<br>WELCO<br>ME</h1>
+      <p class="subtitle">Welcome to our School Store</p>
+      <p class="tagline">Find your school needs here!</p>
+    </div>
+    <div class="hero-mascot">🐰</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     LOGIN
+     ══════════════════════════════════════ -->
+<div id="page-login" class="page">
+  <div class="auth-card">
+    <div class="auth-card-header">🏫 School Store</div>
+    <div class="auth-card-body">
+      <h2>LOGIN</h2>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="login-user" placeholder="masukkan username">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-pass" placeholder="masukkan password">
+      </div>
+      <div class="auth-footer">
+        <button class="btn-primary" onclick="doLogin()">Login</button>
+      </div>
+      <div class="auth-switch">
+        Belum punya akun? <a onclick="goto('register')">Daftar di sini</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     REGISTER
+     ══════════════════════════════════════ -->
+<div id="page-register" class="page">
+  <div class="auth-card">
+    <div class="auth-card-header">🏫 School Store</div>
+    <div class="auth-card-body">
+      <h2>YOU DON'T HAVE ACCOUNT?</h2>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" placeholder="masukkan username">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="masukkan email">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="buat password">
+      </div>
+      <div class="form-group">
+        <label style="font-style:italic;font-size:0.85rem">Confirm ur password</label>
+        <input type="password" placeholder="konfirmasi password">
+      </div>
+      <div class="auth-footer">
+        <button class="btn-primary" onclick="goto('home')">Done</button>
+      </div>
+      <div class="auth-switch">
+        Sudah punya akun? <a onclick="goto('login')">Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     HOME (USER/SISWA)
+     ══════════════════════════════════════ -->
+<div id="page-home" class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <div class="avatar">😊</div>
+      <div class="sidebar-user-info">
+        <div class="name"  id="sidebar-name">ur username</div>
+        <div class="email" id="sidebar-email">Your email</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a onclick="showSection('products')" class="active" id="nav-products">🛍️ Produk</a>
+      <a onclick="showSection('history')"  id="nav-history">📋 My History</a>
+      <a onclick="openCart()"              id="nav-basket">🛒 My Basket</a>
+    </nav>
+    <div class="sidebar-logout">
+      <button class="btn-logout" onclick="goto('landing')">🚪 Logout</button>
+    </div>
+  </aside>
+
+  <!-- Konten Utama -->
+  <div class="main-content">
+    <div class="topbar">
+      <span class="brand">🏫 School Store</span>
+      <div class="topbar-right">
+        <button class="cart-btn" onclick="openCart()">
+          🛒
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+        <div class="search-bar">
+          <span>🔍</span>
+          <input type="text" placeholder="Cari produk..." oninput="filterProducts(this.value)">
+        </div>
+      </div>
+    </div>
+
+    <div class="content-area">
+      <!-- Bagian Produk -->
+      <div id="section-products">
+        <p class="section-title">Kategori Produk</p>
+        <div class="category-grid" id="product-grid"></div>
+      </div>
+
+      <!-- Bagian Riwayat -->
+      <div id="section-history" style="display:none">
+        <p class="section-title">Riwayat Transaksi</p>
+        <div id="history-list"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     DETAIL PRODUK
+     ══════════════════════════════════════ -->
+<div id="page-product" class="page">
+  <div class="back-header">
+    <button class="back-btn" onclick="goto('home')">←</button>
+    <span style="font-weight:700;font-size:1.1rem" id="detail-category">Detail Produk</span>
+  </div>
+  <div class="product-detail-layout">
+    <div class="product-image-area">
+      <div class="product-main-img" id="detail-emoji">📦</div>
+      <div class="product-variants" id="detail-variants"></div>
+    </div>
+    <div class="product-info-area">
+      <h2 id="detail-name">Nama Produk</h2>
+      <p class="product-price" id="detail-price">Harga: -</p>
+      <div class="qty-control">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <span class="qty-display" id="qty-display">0</span>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+      <button class="btn-primary" style="width:200px" onclick="addToCart()">🛒 Tambah ke Keranjang</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     KERANJANG
+     ══════════════════════════════════════ -->
+<div id="page-cart" class="page">
+  <div class="back-header">
+    <button class="back-btn" onclick="goto('home')">←</button>
+    <span style="font-weight:700;font-size:1.1rem">Keranjang / Konfirmasi Pesanan</span>
+  </div>
+  <div class="cart-layout">
+    <div class="cart-items-list" id="cart-items-list"></div>
+    <div class="cart-summary">
+      <div class="cart-summary-card">
+        <h3>📋 Identitas Pembeli</h3>
+        <div class="buyer-form">
+          <div class="form-group">
+            <input type="text" id="buyer-name"  placeholder="Nama lengkap">
+          </div>
+          <div class="form-group">
+            <input type="text" id="buyer-class" placeholder="Kelas (contoh: XII RPL 1)">
+          </div>
+        </div>
+        <div class="total-row">
+          <span>Total</span>
+          <span id="cart-total">Rp 0</span>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:12px" onclick="goto('payment')">💳 Payment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PEMBAYARAN
+     ══════════════════════════════════════ -->
+<div id="page-payment" class="page">
+  <div class="payment-card">
+    <div class="payment-header">💳 Transaction</div>
+    <div class="payment-body">
+      <p style="margin-bottom:20px;font-weight:600;color:var(--text-muted)">Pilih metode pembayaran:</p>
+      <div class="payment-options">
+        <div class="payment-opt" id="opt-ewallet" onclick="selectPayment('ewallet')">
+          <div class="opt-icon">📱</div>
+          <div class="opt-label">E-Wallet / QRIS</div>
+        </div>
+        <div class="payment-opt" id="opt-cash" onclick="selectPayment('cash')">
+          <div class="opt-icon">💵</div>
+          <div class="opt-label">Cash</div>
+        </div>
+      </div>
+      <div class="payment-footer">
+        <button class="btn-secondary" onclick="goto('cart')">← Back</button>
+        <button class="btn-primary" style="flex:1" onclick="confirmPayment()">✅ Konfirmasi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SUKSES / STRUK
+     ══════════════════════════════════════ -->
+<div id="page-success" class="page">
+  <div class="success-card">
+    <div class="success-icon">🎉</div>
+    <h2>Pesanan Berhasil!</h2>
+    <p>Terima kasih, pesanan kamu sudah dicatat.<br>Silakan tunjukkan struk ini ke kasir.</p>
+    <div style="background:var(--green-light);border-radius:12px;padding:16px;margin-bottom:20px;text-align:left"
+         id="receipt-detail"></div>
+    <button class="btn-primary" style="width:100%" onclick="goto('home')">🏠 Kembali ke Beranda</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ADMIN DASHBOARD
+     ══════════════════════════════════════ -->
+<div id="page-admin" class="page">
+  <div class="back-header">
+    <span style="font-weight:700;font-size:1.1rem">👨‍💼 Admin Dashboard – School Store</span>
+    <button class="btn-logout" style="margin-left:auto" onclick="goto('landing')">🚪 Logout</button>
+  </div>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div style="padding:0 20px 20px;font-size:0.8rem;color:var(--text-muted);font-weight:600">ADMIN PANEL</div>
+      <nav class="sidebar-nav">
+        <a onclick="showAdmin('dashboard')" class="active" id="adm-dashboard">📊 Dashboard</a>
+        <a onclick="showAdmin('produk')"    id="adm-produk">📦 Kelola Produk</a>
+        <a onclick="showAdmin('stok')"      id="adm-stok">📋 Kelola Stok</a>
+        <a onclick="showAdmin('users')"     id="adm-users">👥 Kelola User</a>
+        <a onclick="showAdmin('transaksi')" id="adm-transaksi">💳 Kelola Pembayaran</a>
+      </nav>
+    </aside>
+    <div class="admin-content" id="admin-content-area">
+      <!-- diisi oleh script.js -->
+    </div>
+  </div>
+</div>
+
+<!-- JS terpisah (di bawah body agar DOM sudah siap) -->
+<script src="script.js"></script>
+
+</body>
+</html>
